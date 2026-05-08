@@ -21,7 +21,7 @@ export default async function HomePage() {
         <div className="container">
 
           {/* Image strip */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr", gap: 12, height: 380, marginBottom: 36 }}>
+          <div className="hero-grid" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr", gap: 12, height: 380, marginBottom: 36 }}>
             <div style={{ borderRadius: "var(--r-lg)", overflow: "hidden", position: "relative", background: "var(--cream)" }}>
               <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&auto=format&fit=crop" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <span style={{ position: "absolute", left: 16, bottom: 16, background: "rgba(255,255,255,.96)", padding: "8px 14px", borderRadius: "var(--r-pill)", fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>
@@ -86,7 +86,7 @@ export default async function HomePage() {
             <h2 className="display h2" style={{ margin: 0 }}>Popular near <em>Brooklyn</em></h2>
             <Link href="/search" className="link-u">See all 240 →</Link>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "28px 18px" }}>
+          <div className="listing-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "28px 18px" }}>
             {popular.map((l) => (
               <ListingCard key={l.id} img={l.img} badge={l.type} title={l.title} sub={l.neighborhood} price={`$${l.price.toLocaleString()}/hr`} meta={`${l.capacity} guests`} rating="4.9 (12)" href={`/listing/${l.id}`} />
             ))}
@@ -168,7 +168,7 @@ export default async function HomePage() {
 
       {/* Host CTA */}
       <section id="host" className="container">
-        <div style={{ marginTop: 64, borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--ink)", color: "var(--bg)", display: "grid", gridTemplateColumns: "1.1fr 1fr", minHeight: 460 }}>
+        <div className="host-cta-grid" style={{ marginTop: 64, borderRadius: "var(--r-lg)", overflow: "hidden", background: "var(--ink)", color: "var(--bg)", display: "grid", gridTemplateColumns: "1.1fr 1fr", minHeight: 460 }}>
           <div style={{ padding: "64px 56px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <span className="eyebrow" style={{ color: "var(--citron)" }}>For hosts</span>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: 64, lineHeight: 1.0, margin: "0 0 20px", color: "var(--bg)" }}>

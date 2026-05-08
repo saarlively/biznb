@@ -247,3 +247,56 @@ a { color: inherit; text-decoration: none; }
   .searchbar .field + .field::before { display: none; }
   .search-submit { grid-column: span 2; width: 100% !important; height: 48px; border-radius: 12px; margin: 8px; }
 }
+
+@media (max-width: 768px) {
+  :root { --pad: 16px; }
+
+  /* Nav */
+  .nav-links { display: none; }
+  .nav-host { display: none; }
+  .nav-inner { gap: 12px; }
+
+  /* Hero image grid → single image */
+  .hero-grid { grid-template-columns: 1fr !important; height: 220px !important; }
+  .hero-grid > *:not(:first-child) { display: none; }
+
+  /* Search bar on home → stacked */
+  .searchbar {
+    grid-template-columns: 1fr !important;
+    border-radius: var(--r) !important;
+  }
+  .searchbar .field { border-bottom: 1px solid var(--line); }
+  .search-submit { grid-column: 1 !important; width: 100% !important; height: 48px; border-radius: 12px; margin: 8px; }
+
+  /* Listing grids → 2 columns */
+  .listing-grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 20px 12px !important; }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr !important; gap: 28px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+
+  /* Trust band */
+  .trust-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+
+  /* Host CTA */
+  .host-cta-grid { grid-template-columns: 1fr !important; }
+  .host-cta-img { display: none; }
+
+  /* How it works */
+  .how-grid { grid-template-columns: 1fr !important; }
+  .how-img { display: none; }
+
+  /* Listing detail */
+  .listing-detail-grid { grid-template-columns: 1fr !important; }
+  .booking-widget { position: static !important; }
+
+  /* Inbox */
+  .inbox-aside-left { display: none; }
+  .inbox-right-rail { display: none; }
+}
+
+@media (max-width: 480px) {
+  .listing-grid-4 { grid-template-columns: 1fr !important; }
+  .h1 { font-size: 38px !important; }
+  .h2 { font-size: 28px !important; }
+}

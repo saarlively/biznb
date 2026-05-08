@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { createBooking } from "@/app/actions/bookings";
@@ -43,6 +44,7 @@ type Listing = {
 export default function ListingPage() {
   const params = useParams();
   const router = useRouter();
+  const { data: session } = useSession();
   const [listing, setListing] = useState<Listing | null>(null);
   const [loading, setLoading] = useState(true);
   const [priceTab, setPriceTab] = useState("Hour");
@@ -60,6 +62,10 @@ export default function ListingPage() {
 
   async function handleBook() {
     if (!listing) return;
+    if (!session) {
+      router.push(`/auth?callbackUrl=/listing/${params.id}`);
+      return;
+    }
     setBooking(true);
     setBookError("");
     try {
@@ -206,11 +212,15 @@ export default function ListingPage() {
                 Where you&apos;ll <em>be</em>
               </h2>
               <p className="muted" style={{ margin: "0 0 14px" }}>{listing.location} · Exact address shared after booking confirms.</p>
-              <div style={{ height: 240, background: "#E8E4DA", borderRadius: "var(--r-lg)", overflow: "hidden", position: "relative", maxWidth: 920 }}>
-                <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(0deg, rgba(255,255,255,.5) 0 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 0 1px, transparent 1px)", backgroundSize: "80px 80px", transform: "rotate(-8deg) scale(1.5)", opacity: .9 }} />
-                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", background: "var(--ink)", color: "#fff", padding: "12px 16px", borderRadius: "var(--r-pill)", fontSize: 13, fontWeight: 700, zIndex: 2 }}>
-                  {listing.neighborhood}
-                </div>
+              <div style={{ height: 240, borderRadius: "var(--r-lg)", overflow: "hidden", maxWidth: 920 }}>
+                <iframe
+                  title="map"
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=-74.05%2C40.65%2C-73.88%2C40.78&layer=mapnik`}
+                  width="100%"
+                  height="240"
+                  style={{ border: 0, display: "block" }}
+                  loading="lazy"
+                />
               </div>
 
               {/* Reviews */}

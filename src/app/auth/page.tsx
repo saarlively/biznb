@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { registerUser } from "@/app/actions/auth";
 
-export default function AuthPage() {
+function AuthForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,8 +34,7 @@ export default function AuthPage() {
         setError("Invalid email or password.");
         setLoading(false);
       } else {
-        router.push("/");
-        router.refresh();
+        window.location.href = callbackUrl;
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -148,5 +149,13 @@ export default function AuthPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense>
+      <AuthForm />
+    </Suspense>
   );
 }
