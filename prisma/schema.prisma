@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  listings      Listing[]
+  bookings      Booking[]
+  sentMessages  Message[]
+  hostedThreads Thread[]  @relation("ThreadHost")
+  guestThreads  Thread[]  @relation("ThreadGuest")
+}
+
+model Listing {
+  id           String   @id @default(cuid())
+  title        String
+  type         String
+  location     String
+  neighborhood String
+  description  String
+  price        Float
+  capacity     Int
+  sqft         Int?
+  status       String   @default("draft")
+  img          String
+  availability String   @default("By request")
+  createdAt    DateTime @default(now())
+
+  hostId   String
+  host     User      @relation(fields: [hostId], references: [id])
+  bookings Booking[]
+  threads  Thread[]
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  startDate DateTime
+  endDate   DateTime
+  hours     Int
+  guests    Int
+  total     Float
+  status    String   @default("pending")
+  useCase   String
+  createdAt DateTime @default(now())
+
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  guestId   String
+  guest     User     @relation(fields: [guestId], references: [id])
+  thread    Thread?
+}
+
+model Thread {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  bookingId String?  @unique
+  booking   Booking? @relation(fields: [bookingId], references: [id])
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  hostId    String
+  host      User     @relation("ThreadHost", fields: [hostId], references: [id])
+  guestId   String
+  guest     User     @relation("ThreadGuest", fields: [guestId], references: [id])
+  messages  Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+
+  threadId String
+  thread   Thread @relation(fields: [threadId], references: [id])
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id])
+}
